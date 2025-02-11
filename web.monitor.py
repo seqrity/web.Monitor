@@ -28,6 +28,12 @@ def add_url(url):
         cursor.execute('INSERT OR IGNORE INTO websites (url, data) VALUES (?, ?)', (url, '[]'))
         conn.commit()
 
+def remove_url(url):
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+        cursor.execute('DELETE FROM websites WHERE url = ?', (url,))
+        conn.commit()
+
 def add_urls_from_file(filename):
     with open(filename, 'r') as f:
         for url in f:
@@ -127,7 +133,6 @@ def show_changes_for_url(url):
     print()
 
 def main():
-
     create_database()
 
     print("""
@@ -141,10 +146,9 @@ def main():
                         github.com/e1abrador/web.Monitor
     """)
 
-
-
     parser = argparse.ArgumentParser(description="Monitor websites for changes.")
     parser.add_argument('--add', help='Add a URL to monitor.')
+    parser.add_argument('--remove', help='Remove a URL from monitoring.')
     parser.add_argument('--add-urls', help='Add URLs from a file to monitor.')
     parser.add_argument('--check', action='store_true', help='Check all the websites for changes.')
     parser.add_argument('-D', '--domain', help='Check websites for a specific root domain.')
@@ -157,6 +161,10 @@ def main():
 
     if args.add:
         add_url(args.add)
+
+    if args.remove:
+        remove_url(args.remove)
+        print(f"URL {args.remove} removed from monitoring.")
 
     if args.add_urls:
         add_urls_from_file(args.add_urls)
