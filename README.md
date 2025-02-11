@@ -44,7 +44,8 @@
 ````console
 options:
   -h, --help            show this help message and exit
-  --add ADD             Add a URL to monitor.
+  --add [URL]            Add a URL to monitor.
+  --remove [URL]         Remove a URL from database.
   --add-urls ADD_URLS   Add URLs from a file to monitor.
   --check               Check all the websites for changes.
   -D DOMAIN, --domain DOMAIN
@@ -133,6 +134,12 @@ python3 web.monitor.py --url http://example.com:81 --show-changes
 
 
 Note that when using the above command, every URL that contains the domain used in ``-D`` flag will be used, in this example the script will show *.example.com.
+
+## Remove a URL from the database:
+
+````console
+python3 web.monitor.py --remove http://example.com:81
+````
 
   ## Thanks
   
